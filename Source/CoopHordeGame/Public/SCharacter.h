@@ -30,6 +30,10 @@ protected:
 
 	void EndCrouch();
 
+	void StartJump();
+
+	void EndJump();
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
 

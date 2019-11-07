@@ -59,6 +59,18 @@ void ASCharacter::EndCrouch()
 	UnCrouch();
 }
 
+//Start Jumping
+void ASCharacter::StartJump()
+{
+	Jump();
+}
+
+//End Jumping
+void ASCharacter::EndJump()
+{
+	StopJumping();
+}
+
 
 // Called every frame
 void ASCharacter::Tick(float DeltaTime)
@@ -83,6 +95,10 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	//Crouch Input
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASCharacter::BeginCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ASCharacter::EndCrouch);
+
+	//Jump Input
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASCharacter::StartJump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ASCharacter::EndJump);
 
 }
 

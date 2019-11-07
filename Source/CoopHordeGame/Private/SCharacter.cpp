@@ -32,7 +32,7 @@ ASCharacter::ASCharacter()
 void ASCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 //Movement Input for Right & Left
@@ -54,18 +54,6 @@ void ASCharacter::BeginCrouch()
 }
 
 //UnCrouching
-void ASCharacter::EndCrouch()
-{
-	UnCrouch();
-}
-
-
-void ASCharacter::BeginCrouch()
-{
-	Crouch();
-}
-
-
 void ASCharacter::EndCrouch()
 {
 	UnCrouch();

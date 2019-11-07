@@ -23,11 +23,8 @@ ASCharacter::ASCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 
 	//Enables Crouching
-<<<<<<< Updated upstream
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
-=======
-	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true
->>>>>>> Stashed changes
+
 }
 
 
@@ -95,14 +92,9 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAxis("LookUp", this, &ASCharacter::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Turn", this, &ASCharacter::AddControllerYawInput);
 
-<<<<<<< Updated upstream
+	//Crouch Input
 	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASCharacter::BeginCrouch);
 	PlayerInputComponent->BindAction("Crouch", IE_Released, this, &ASCharacter::EndCrouch);
-=======
-	//For Crouching
-	PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &ASCharacter::Crouch);
-	PlayerInputComponent->BindAction("UnCrouch", IE_Pressed, this, &ASCharacter::UnCrouch);
 
->>>>>>> Stashed changes
 }
 

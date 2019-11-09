@@ -4,6 +4,7 @@
 #include "SWeapon.h"
 #include "..\Public\SWeapon.h"
 #include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ASWeapon::ASWeapon()
@@ -33,9 +34,10 @@ void ASWeapon::Fire()
 		FVector EyeLocation;
 		FRotator EyeRotation;
 		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+		FVector ShotDirection = EyeRotation.Vector();
 
 		// Get the vector end of a line trace
-		FVector TraceEnd = EyeLocation + (EyeRotation.Vector() * 10000);
+		FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
 
 		/* Used for more accurate collision detection. 
 		Useful for getting specific hit sections for things liek a headshot */
@@ -54,7 +56,9 @@ void ASWeapon::Fire()
 		{
 			// Blocking hit! Process damage
 
+			AActor* HitActor = Hit.GetActor()
 
+				UGameplayStatics::ApplyPointDamage(HitActor, 20.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 		}
 
 		// Draw A line for the shot

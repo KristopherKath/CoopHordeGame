@@ -102,3 +102,16 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 }
 
+FVector ASCharacter::GetPawnViewLocation() const
+{
+	//Return the camera component location
+	if (CameraComp)
+	{
+		return CameraComp->GetComponentLocation();
+	}
+
+	//if previous fails then fallback to
+		//original implementation which gets eye height of character
+	return Super::GetPawnViewLocation();
+}
+

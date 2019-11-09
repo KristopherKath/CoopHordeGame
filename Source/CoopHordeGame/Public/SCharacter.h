@@ -47,4 +47,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	//Overrides the Engine implementation of GetPawnViewLocation()
+	virtual FVector GetPawnViewLocation() const override;
 };

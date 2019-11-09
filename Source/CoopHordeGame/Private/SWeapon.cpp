@@ -56,9 +56,10 @@ void ASWeapon::Fire()
 		{
 			// Blocking hit! Process damage
 
-			AActor* HitActor = Hit.GetActor()
+			AActor* HitActor = Hit.GetActor();
 
-				UGameplayStatics::ApplyPointDamage(HitActor, 20.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
+			//Applies damage to hit actor
+			UGameplayStatics::ApplyPointDamage(HitActor, 20.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 		}
 
 		// Draw A line for the shot

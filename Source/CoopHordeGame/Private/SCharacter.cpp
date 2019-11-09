@@ -111,7 +111,7 @@ FVector ASCharacter::GetPawnViewLocation() const
 	}
 
 	//if previous fails then fallback to
-		//original implementation which gets eye height of character
+	//original implementation which gets eye height of character
 	return Super::GetPawnViewLocation();
 }
 

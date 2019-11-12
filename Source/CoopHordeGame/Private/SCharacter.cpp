@@ -1,11 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-
+#include "SCharacter.h"
 #include "..\Public\SCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "SWeapon.h"
+#include "SGrenadeLauncher.h"
 
 
 // Constructor
@@ -29,6 +31,8 @@ ASCharacter::ASCharacter()
 	
 	ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 20;
+
+	WeaponAttachSocketName = "Weapon_Socket";
 }
 
 
@@ -39,6 +43,17 @@ void ASCharacter::BeginPlay()
 
 	//Set Default FOV
 	DefaultFOV = CameraComp->FieldOfView;
+
+	//Spawn a default weapon
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	CurrentWeapon = GetWorld()->SpawnActor<ASWeapon>(StarterWeaponClass, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->SetOwner(this);
+		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, "Weapon_Socket");
+	}
 }
 
 //Movement Input for Right & Left
@@ -89,6 +104,14 @@ void ASCharacter::EndZoom()
 	bWantToZoom = false;
 }
 
+void ASCharacter::Fire()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->Fire();
+	}
+}
+
 // Called every frame
 void ASCharacter::Tick(float DeltaTime)
 {
@@ -126,6 +149,8 @@ void ASCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Zoom", IE_Pressed, this, &ASCharacter::BeginZoom);
 	PlayerInputComponent->BindAction("Zoom", IE_Released, this, &ASCharacter::EndZoom);
 
+	//Fire Input
+	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASCharacter::Fire);
 
 }
 

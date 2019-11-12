@@ -8,7 +8,7 @@
 #include "Particles/ParticleSystem.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Particles/ParticleSystemComponent.h"
-#include "LauncherProjectile.h"
+
 
 
 void ASGrenadeLauncher::Fire()

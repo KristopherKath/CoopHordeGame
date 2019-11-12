@@ -20,10 +20,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	TSubclassOf<AActor> ProjectileClass;
 
-	/** Gun muzzle's offset from the camera location */
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-	//FVector MuzzleOffset;
-
 protected:
 	virtual void Fire() override;
 

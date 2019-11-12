@@ -57,7 +57,6 @@ void ASWeapon::Fire()
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
 
-		
 
 		// A struct of hit result data
 		FHitResult Hit;

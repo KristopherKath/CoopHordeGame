@@ -40,6 +40,23 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USpringArmComponent* SpringArmComp;
 
+	bool bWantToZoom;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Player")
+	float ZoomedFOV;
+
+	//meta specifier control how the property behaves in Engine and Editor
+	//The meta will put clamps in the editor for manipulating the ZoomInterpSpeed from 0.1 to 100.
+	UPROPERTY(EditDefaultsOnly, Category = "Player", meta = (ClampMin = 0.1, ClampMax = 100))
+	float ZoomInterpSpeed;
+
+	/* Default FOV set on begin play */
+	float DefaultFOV;
+
+	void BeginZoom();
+
+	void EndZoom();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

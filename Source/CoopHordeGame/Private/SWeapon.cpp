@@ -62,9 +62,8 @@ void ASWeapon::Fire()
 
 		// A struct of hit result data
 		FHitResult Hit;
-
 		// if there was a hit
-		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams)) 
+		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, COLLISION_WEAPON, QueryParams)) 
 		{
 			// Blocking hit! Process damage
 

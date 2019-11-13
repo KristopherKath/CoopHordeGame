@@ -8,6 +8,8 @@
 #include "Particles/ParticleSystem.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "CoopHordeGame.h"
+#include "PhysicalMaterials\PhysicalMaterial.h"
 
 //Adds Console Command for Weapon Drawing Debuging
 static int32 DebugWeaponDrawing = 0;
@@ -56,11 +58,10 @@ void ASWeapon::Fire()
 		QueryParams.AddIgnoredActor(MyOwner);
 		QueryParams.AddIgnoredActor(this);
 		QueryParams.bTraceComplex = true;
-
+		QueryParams.bReturnPhysicalMaterial = true;
 
 		// A struct of hit result data
 		FHitResult Hit;
-
 
 		// if there was a hit
 		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams)) 
@@ -72,10 +73,29 @@ void ASWeapon::Fire()
 			//Applies damage to hit actor
 			UGameplayStatics::ApplyPointDamage(HitActor, 20.0f, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
 
-			// Play ImpactEffect
-			if (ImpactEffect)
+
+			//Determine Surface Type
+			EPhysicalSurface SurfaceType = UPhysicalMaterial::DetermineSurfaceType(Hit.PhysMaterial.Get());
+			
+			UParticleSystem* SelectedEffect = nullptr;
+
+			//Select what impact effect to play.
+				//Case names defined in CoopHordeGame.h
+			switch (SurfaceType)
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ImpactEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
+			case SURFACE_FLESHDEFAULT:
+			case SURFACE_FLESHVULNERABLE:
+				SelectedEffect = FleshImpactEffect;
+				break;
+			default:
+				SelectedEffect = DefaultImpactEffect;
+				break;
+			}
+
+			// Play ImpactEffect
+			if (SelectedEffect)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SelectedEffect, Hit.ImpactPoint, Hit.ImpactNormal.Rotation());
 			}
 
 			//Change end point if we hit something

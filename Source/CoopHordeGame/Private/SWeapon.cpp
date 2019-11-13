@@ -10,6 +10,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "CoopHordeGame.h"
 #include "PhysicalMaterials\PhysicalMaterial.h"
+#include "TimerManager.h"
 
 //Adds Console Command for Weapon Drawing Debuging
 static int32 DebugWeaponDrawing = 0;
@@ -30,8 +31,17 @@ ASWeapon::ASWeapon()
 	TracerTargetName = "Target";
 
 	BaseDamage = 20.0f;
+
+	//Bullets per minute
+	RateOfFire = 600;
 }
 
+void ASWeapon::BeginPlay()
+{
+	Super::BeginPlay();
+
+	TimeBetweenShots = 60 / RateOfFire;
+}
 
 void ASWeapon::Fire()
 {
@@ -120,10 +130,28 @@ void ASWeapon::Fire()
 		}
 		
 		PlayFireEffects(TracerEndPoint);
+
+		LastFireTime = GetWorld()->TimeSeconds;
 		
 	}
 	
 }
+
+void ASWeapon::StartFire()
+{
+	//Pick which ever value is greatest. Left or 0. Reason being is that negative value is default in SetTimer()
+	//And if we use that then it would disregaurd the FirstDelay function we want.
+	float FirstDelay = FMath::Max(LastFireTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
+	//Every n second we call Fire()
+	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, true, FirstDelay);
+}
+
+void ASWeapon::StopFire()
+{
+	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
+}
+
+
 
 // Plays Effects
 void ASWeapon::PlayFireEffects(FVector TracerEndPoint)
